@@ -40,7 +40,7 @@ return <section>
     <div className={'graph-area space-y-4  space-x-6 container overflow-x-auto mx-auto max-w-5xl '}>
                             {
 
-                                storeState === true ?? routers.length > 0 ? routers.map((router,key) => {
+                                storeState === true && routers.length > 0 ? routers.map((router,key) => {
                                     
                                     let data = [];
                                     counter.current++;
