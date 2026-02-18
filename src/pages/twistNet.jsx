@@ -330,7 +330,7 @@ export const TwistNet = () => {
                    value={phoneNumber}
                    onChange={(e) => setPhoneNumber(e.target.value)}
                    placeholder="07XX XXX XXX"
-                   className="block w-full pl-12 pr-4 py-3 bg-white/10 border border-white/30 rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white"
+                   className="block w-full pl-12 pr-4 py-3 bg-black/80 border border-white/30 rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white"
                  />
                </div>
              </div>
