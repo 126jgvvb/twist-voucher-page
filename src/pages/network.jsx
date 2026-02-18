@@ -121,7 +121,7 @@ export const networkObject={
 
     sendPhoneNumber: async (objX) => {  
         try {
-            const resp = await fetch(`${SERVER_IP}?url=/airtel/collect?phoneNumber=${objX.phoneNumber}&selectedPrice=${objX.selectedPrice}&ghostUser=${objX.ghostUser}&reSellerPhoneNumber=${objX.reSellerPhoneNumber}`,
+            const resp = await fetch(`${SERVER_IP}?url=/iotec/collect?phoneNumber=${objX.phoneNumber}&selectedPrice=${objX.selectedPrice}&ghostUser=${objX.ghostUser}&reSellerPhoneNumber=${objX.reSellerPhoneNumber}`,
                 {
                     method: 'POST',
                     body: JSON.stringify({ phoneNumber:objX.phoneNumber,selectedPrice:objX.selectedPrice,reSellerPhoneNumber:objX.reSellerPhoneNumber,ghostUser:objX.ghostUser }),

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { CircleNotch, WifiHigh, Phone, Copy } from "phosphor-react";
 import { LucideLoaderPinwheel } from "lucide-react";
 import { networkObject } from "./network";
+import logo from "../assets/logo.jpg";
 
 export const TwistNet = () => {
   const [selectedPackage, setSelectedPackage] = useState(2); // Default to 24 Hrs
@@ -101,7 +102,7 @@ export const TwistNet = () => {
 
   const handlePayAndConnect = async () => {
     if (!phoneNumber || !/^07\d{8}$/.test(phoneNumber.replace(/\s/g, ""))) {
-      alert("Please enter a valid Airtel phone number (07XX XXX XXX)");
+      alert("Please enter a valid phone number (07XX XXX XXX)");
       return;
     }
 
@@ -117,12 +118,12 @@ export const TwistNet = () => {
         reSellerPhoneNumber:hotlineNumber
       });
 
-      if (result?.data?.status === 200 && result.data.voucher) {
-        setVoucher(result.data.voucher);
+      if (result?.status === 200 && result.code!=null) {
+        setVoucher(result.code);
         setShowVoucher(true);
         
         // Automatically connect using the voucher
-        await connectWithVoucher(result.data.voucher);
+        await connectWithVoucher(result.code);
       } else {
         alert("Payment failed. Please try again.");
       }
@@ -299,53 +300,65 @@ export const TwistNet = () => {
 
       {/* Mobile Money Payment */}
       <div className="w-full max-w-lg px-4">
-        <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20">
-          <h3 className="text-xl font-semibold mb-4 text-left">
-            <Phone size={24} className="inline-block mr-2" />
-            Pay with Mobile Money(Airtel number)
-          </h3>
-          
-          <div className="space-y-4">
-            <div className="text-left">
-              <label className="block text-sm font-medium text-gray-200 mb-1">Phone Number</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                </div>
-                <input
-                  type="tel"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="07XX XXX XXX"
-                  className="block w-full pl-12 pr-4 py-3 bg-white/10 border border-white/30 rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white"
-                />
-              </div>
-            </div>
+        <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 overflow-hidden">
+            {/* Background Image */}
+             <div 
+               className="absolute inset-0 bg-cover bg-center"
+               style={{ 
+                 backgroundImage: `url(${logo})`,
+                 opacity: 1
+               }}
+             />
+            {/* Content Container - to ensure content is above background */}
+            <div className="relative z-10">
+              <h3 className="text-xl font-semibold mb-4 text-left">
+                <Phone size={24} className="inline-block mr-2" />
+                Pay with Mobile Money
+              </h3>
+           
+           <div className="space-y-4">
+             <div className="text-left">
+               <label className="block text-sm font-medium text-gray-200 mb-1">Phone Number</label>
+               <div className="relative">
+                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                   <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                   </svg>
+                 </div>
+                 <input
+                   type="tel"
+                   value={phoneNumber}
+                   onChange={(e) => setPhoneNumber(e.target.value)}
+                   placeholder="07XX XXX XXX"
+                   className="block w-full pl-12 pr-4 py-3 bg-white/10 border border-white/30 rounded-2xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white"
+                 />
+               </div>
+             </div>
 
-            <button
-              onClick={handlePayAndConnect}
-              disabled={loading}
-              className="w-full bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white font-semibold py-3 px-4 rounded-2xl transition-all duration-300 flex justify-center items-center space-x-2"
-            >
-              {loading ? (
-                <>
-                  <CircleNotch size={20} className="animate-spin" />
-                  <span>Connecting...</span>
-                </>
-              ) : (
-                <>
-                  <span>Pay & Connect</span>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </>
-              )}
-            </button>
-          </div>
+             <button
+               onClick={handlePayAndConnect}
+               disabled={loading}
+               className="w-full bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white font-semibold py-3 px-4 rounded-2xl transition-all duration-300 flex justify-center items-center space-x-2"
+             >
+               {loading ? (
+                 <>
+                   <CircleNotch size={20} className="animate-spin" />
+                   <span>Connecting...</span>
+                 </>
+               ) : (
+                 <>
+                   <span>Pay & Connect</span>
+                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                   </svg>
+                 </>
+               )}
+             </button>
+           </div>
+            </div> {/* Closing content container */}
         </div>
       </div>
+      
 
       {/* Voucher Section (Only visible when payment is successful) */}
       {showVoucher && (
